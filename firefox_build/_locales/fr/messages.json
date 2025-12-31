@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "Nettoyeur de Marque-pages",
+    "message": "QuickMark",
     "description": "Nom de l'extension"
   },
   "appDescription": {
-    "message": "Gérez, organisez et supprimez les doublons de vos marque-pages efficacement.",
+    "message": "Gérez, organisez, explorez et nettoyez vos favoris avec une interface moderne.",
     "description": "Description de l'extension"
   },
   "btnScan": {
