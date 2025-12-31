@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="newtab.css">
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <a href="javascript:void(0)" id="btnDefaultHome" class="top-corner-btn" title="Home / Default New Tab">
+        🏠
+    </a>
+    <div class="container">
+        <header>
+            <div class="greeting">
+                <h1 id="greetingId">Bonjour</h1>
+                <p id="dateDisplay"></p>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Rechercher sur le web ou dans les favoris...">
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2 data-i18n="headerFavorites">Favoris (Top Sites)</h2>
+                <div id="topSitesList" class="grid-list">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 data-i18n="headerRecent">Récents</h2>
+                <div id="recentList" class="list-vertical">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../lib/config.js"></script>
+    <script src="newtab.js"></script>
+</body>
+
+</html>

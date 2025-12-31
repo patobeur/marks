@@ -1,0 +1,28 @@
+{
+  "appName": {
+    "message": "Nettoyeur de Marque-pages",
+    "description": "Nom de l'extension"
+  },
+  "appDescription": {
+    "message": "Gérez, organisez et supprimez les doublons de vos marque-pages efficacement.",
+    "description": "Description de l'extension"
+  },
+  "btnScan": {
+    "message": "Scanner les doublons"
+  },
+  "btnViewDetails": {
+    "message": "Voir Liste des doublons"
+  },
+  "btnGroup": {
+    "message": "Regrouper"
+  },
+  "btnDelete": {
+    "message": "Supprimer les doublons"
+  },
+  "headerFavorites": {
+    "message": "Favoris"
+  },
+  "headerRecent": {
+    "message": "Récents"
+  }
+}

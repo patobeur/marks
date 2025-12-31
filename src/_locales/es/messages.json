@@ -1,0 +1,28 @@
+{
+    "appName": {
+        "message": "Limpiador de Marcadores",
+        "description": "Nombre de la extensión"
+    },
+    "appDescription": {
+        "message": "Gestiona, organiza y elimina marcadores duplicados eficientemente.",
+        "description": "Descripción de la extensión"
+    },
+    "btnScan": {
+        "message": "Escanear Duplicados"
+    },
+    "btnViewDetails": {
+        "message": "Ver Lista de Duplicados"
+    },
+    "btnGroup": {
+        "message": "Agrupar"
+    },
+    "btnDelete": {
+        "message": "Borrar Duplicados"
+    },
+    "headerFavorites": {
+        "message": "Favoritos"
+    },
+    "headerRecent": {
+        "message": "Recientes"
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "appName": {
+        "message": "Bookmark Cleaner",
+        "description": "Extension Name"
+    },
+    "appDescription": {
+        "message": "Manage, organize and remove duplicate bookmarks efficiently.",
+        "description": "Extension Description"
+    },
+    "btnScan": {
+        "message": "Scan for Duplicates"
+    },
+    "btnViewDetails": {
+        "message": "View Duplicates List"
+    },
+    "btnGroup": {
+        "message": "Group Duplicates"
+    },
+    "btnDelete": {
+        "message": "Delete Duplicates"
+    },
+    "headerFavorites": {
+        "message": "Favorites"
+    },
+    "headerRecent": {
+        "message": "Recents"
+    }
+}

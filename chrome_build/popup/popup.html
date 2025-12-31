@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <img src="../icons/icon48.png" alt="Logo" class="logo">
+      <h1 id="appName">Bookmark Cleaner</h1>
+    </header>
+
+    <main>
+      <div class="status-card">
+        <div class="status-icon">🔍</div>
+        <div class="status-text">
+          <span id="statusMessage">Prêt à scanner</span>
+          <strong id="duplicateCount">0</strong> <span id="duplicatesLabel">doublons</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btnScan" class="btn btn-primary">
+          <span class="icon">🔎</span> <span data-i18n="btnScan">Scanner</span>
+        </button>
+        <button id="btnViewDetails" class="btn btn-info" style="display:none; margin-bottom: 5px;">
+          <span class="icon">👁️</span> <span data-i18n="btnViewDetails">Voir Liste</span>
+        </button>
+        <button id="btnGroup" class="btn btn-secondary" disabled>
+          <span class="icon">📁</span> <span data-i18n="btnGroup">Regrouper</span>
+        </button>
+        <button id="btnDelete" class="btn btn-danger" disabled>
+          <span class="icon">🗑️</span> <span data-i18n="btnDelete">Supprimer</span>
+        </button>
+      </div>
+    </main>
+
+    <footer>
+      <a href="#" id="linkHomepage">🏠 Dashboard</a>
+      <a href="#" id="linkOptions">⚙️ Options</a>
+    </footer>
+  </div>
+
+  <script src="../lib/config.js"></script>
+  <script src="../lib/bookmark-manager.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
