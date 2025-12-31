@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Elements
     const btnScan = document.getElementById('btnScan');
     const btnGroup = document.getElementById('btnGroup');
-    const btnDelete = document.getElementById('btnDelete');
+
     const btnViewDetails = document.getElementById('btnViewDetails');
     const statusMessage = document.getElementById('statusMessage');
     const duplicateCount = document.getElementById('duplicateCount');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         btnScan.disabled = false;
         btnGroup.disabled = count === 0;
-        btnDelete.disabled = count === 0;
+
 
         if (btnViewDetails) {
             btnViewDetails.style.display = count > 0 ? 'inline-block' : 'none';
@@ -54,19 +54,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusMessage.textContent = 'Regroupé!';
     }
 
-    async function performDelete() {
-        if (confirm('Voulez-vous vraiment supprimer tous les doublons ? Cette action est irréversible.')) {
-            statusMessage.textContent = 'Suppression...';
-            const deleted = await manager.deleteDuplicates();
-            statusMessage.textContent = `Supprimé ${deleted} doublons`;
-            await performScan();
-        }
-    }
+
 
     // Event Listeners
     btnScan.addEventListener('click', performScan);
     btnGroup.addEventListener('click', performGroup);
-    btnDelete.addEventListener('click', performDelete);
+
 
     if (btnViewDetails) {
         btnViewDetails.addEventListener('click', () => {
