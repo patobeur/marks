@@ -64,6 +64,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    const btnGallery = document.getElementById('btnGallery');
+    if (btnGallery) {
+        btnGallery.addEventListener('click', () => {
+            chrome.tabs.create({ url: chrome.runtime.getURL('gallery/gallery.html') });
+        });
+    }
+
     btnScan.addEventListener('click', performScan);
     btnGroup.addEventListener('click', performGroup);
 

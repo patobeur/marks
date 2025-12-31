@@ -18,6 +18,10 @@
         "message": "Explorar",
         "description": "Button to open file explorer view"
     },
+    "btnGallery": {
+        "message": "Galería",
+        "description": "Button to open gallery view"
+    },
     "btnGroup": {
         "message": "Agrupar"
     },
