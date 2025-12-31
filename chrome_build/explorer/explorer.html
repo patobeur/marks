@@ -22,6 +22,16 @@
                 <div class="loading">Chargement...</div>
             </div>
         </main>
+        <div id="deleteModal" class="modal-overlay hidden">
+            <div class="modal">
+                <h3 class="modal-title">Supprimer le favori ?</h3>
+                <p id="modalBookmarkTitle" class="modal-text"></p>
+                <div class="modal-actions">
+                    <button id="btnCancelDelete" class="btn-secondary">Annuler</button>
+                    <button id="btnConfirmDelete" class="btn-danger">Supprimer</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="../lib/config.js"></script>

@@ -11,14 +11,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize Manager
     const manager = new BookmarkManager();
-    let duplicatesSet = new Set();
+    const urlMetaMap = new Map(); // url -> { id: number, count: number }
+
+    // Load expanded state
+    const EXPANDED_KEY = 'marks_explorer_expanded';
+    let expandedNodes = new Set();
+    try {
+        const stored = localStorage.getItem(EXPANDED_KEY);
+        if (stored) expandedNodes = new Set(JSON.parse(stored));
+    } catch (e) { console.error('Error loading state', e); }
+
+    function saveExpandedState() {
+        localStorage.setItem(EXPANDED_KEY, JSON.stringify([...expandedNodes]));
+    }
 
     try {
         await manager.loadBookmarks();
-        // Identify duplicates just to get the list of URLs
+        // Identify duplicates
         const dupesMap = manager.findDuplicates('url');
-        // Flatten to set of URLs for O(1) lookup
-        duplicatesSet = new Set(dupesMap.keys());
+
+        // Build metadata map
+        let groupId = 1;
+        for (const [url, nodes] of dupesMap.entries()) {
+            urlMetaMap.set(url, {
+                id: groupId++,
+                count: nodes.length
+            });
+        }
 
         const tree = await chrome.bookmarks.getTree();
         renderTree(tree, rootEl);
@@ -66,7 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             link.textContent = node.title || node.url;
 
             // Check for duplicate
-            if (duplicatesSet.has(node.url)) {
+            const meta = urlMetaMap.get(node.url);
+            if (meta) {
                 link.classList.add('is-duplicate');
 
                 // create duplicate icon
@@ -75,10 +95,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dupIcon.title = 'Doublon détecté';
                 dupIcon.textContent = '⚠️';
 
-                // Insert icon before text (we need to clear textContent specific logic)
+                // Insert icon before text
                 link.textContent = '';
                 link.appendChild(dupIcon);
-                link.appendChild(document.createTextNode(node.title || node.url));
+
+                // Add title
+                const text = node.title || node.url;
+                link.appendChild(document.createTextNode(text));
+
+                // Add duplicate info tag
+                const dupInfo = document.createElement('span');
+                dupInfo.className = 'duplicate-info';
+                dupInfo.textContent = ` #${meta.id} (${meta.count})`;
+                link.appendChild(dupInfo);
+
+                // Add Delete Button (Trash Icon)
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.innerHTML = '🗑️';
+                delBtn.title = 'Supprimer le favori';
+                delBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openDeleteModal(node, wrapper);
+                });
+                link.appendChild(delBtn);
             }
 
             content.appendChild(link);
@@ -86,29 +127,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         wrapper.appendChild(content);
 
+        // Check if previously expanded
+        const isExpanded = isFolder && expandedNodes.has(node.id);
+
         // Children Container (if folder)
         if (isFolder && node.children) {
             const childrenContainer = document.createElement('div');
-            childrenContainer.className = 'node-children hidden'; // Start collapsed
+            // Use isExpanded to determine initial class
+            childrenContainer.className = `node-children ${isExpanded ? '' : 'hidden'}`;
+
+            // Set initial icon based on storage
+            if (isExpanded) {
+                iconSpan.textContent = ICONS.folderOpen;
+            }
 
             // Interaction to toggle
             content.addEventListener('click', (e) => {
-                // Don't toggle if clicking a link (though here it's a folder click)
                 e.stopPropagation();
                 const isHidden = childrenContainer.classList.contains('hidden');
 
                 if (isHidden) {
                     childrenContainer.classList.remove('hidden');
                     iconSpan.textContent = ICONS.folderOpen;
+                    expandedNodes.add(node.id); // Add to set
                 } else {
                     childrenContainer.classList.add('hidden');
                     iconSpan.textContent = ICONS.folderClosed;
+                    expandedNodes.delete(node.id); // Remove from set
                 }
+                saveExpandedState(); // Persist
             });
 
-            // Special case: Root folders (id 0) should be open by default
+            // Special case: Root folders (id 0) always open/ensured
             if (node.id === '0') {
                 childrenContainer.classList.remove('hidden');
+                expandedNodes.add('0');
             }
 
             // Render children recursively
@@ -121,6 +174,83 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         return wrapper;
     }
+
+    // Modal Logic
+    const modal = document.getElementById('deleteModal');
+    const modalTitle = document.getElementById('modalBookmarkTitle');
+    const btnCancel = document.getElementById('btnCancelDelete');
+    const btnConfirm = document.getElementById('btnConfirmDelete');
+    let nodeToDelete = null;
+    let domElementToDelete = null;
+
+    function openDeleteModal(node, domElement) {
+        nodeToDelete = node;
+        domElementToDelete = domElement;
+        modalTitle.textContent = node.title || node.url;
+        modal.classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        modal.classList.add('hidden');
+        nodeToDelete = null;
+        domElementToDelete = null;
+    }
+
+    btnCancel.addEventListener('click', closeDeleteModal);
+
+    btnConfirm.addEventListener('click', async () => {
+        if (!nodeToDelete) return;
+        if (btnConfirm.disabled) return; // Prevent double clicks
+
+        const url = nodeToDelete.url; // Capture URL before clearing node
+        const elementToRemove = domElementToDelete; // Capture DOM element before clearing
+
+        // Lock button
+        btnConfirm.disabled = true;
+        btnConfirm.style.opacity = '0.7';
+        btnConfirm.textContent = '...';
+
+        try {
+            await chrome.bookmarks.remove(nodeToDelete.id);
+            closeDeleteModal(); // This wipes global references
+
+            // Remove from DOM
+            if (elementToRemove) {
+                elementToRemove.remove();
+            }
+
+            // Update Counts for other duplicates of this URL
+            const meta = urlMetaMap.get(url);
+            if (meta && meta.count > 0) {
+                meta.count--;
+                // Find all other links for this URL to update their count display
+                // We search for links with 'is-duplicate' and matching href
+                const links = document.querySelectorAll(`.is-bookmark.is-duplicate[href="${url}"]`);
+                links.forEach(link => {
+                    const infoSpan = link.querySelector('.duplicate-info');
+                    if (infoSpan) {
+                        // Keep the same Group ID, just decrement count
+                        infoSpan.textContent = ` #${meta.id} (${meta.count})`;
+                    }
+                });
+            }
+
+        } catch (e) {
+            alert('Erreur lors de la suppression: ' + e.message);
+        } finally {
+            // Unlock button (reset for next time)
+            btnConfirm.disabled = false;
+            btnConfirm.style.opacity = '1';
+            btnConfirm.textContent = 'Supprimer';
+        }
+    });
+
+    // Close on overlay click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeDeleteModal();
+        }
+    });
 
     // Simple Search Filter
     searchInput.addEventListener('input', (e) => {
