@@ -9,6 +9,7 @@ xcopy src\newtab chrome_build\newtab /I /Y
 xcopy src\options chrome_build\options /I /Y
 xcopy src\popup chrome_build\popup /I /Y
 xcopy src\report chrome_build\report /I /Y
+xcopy src\explorer chrome_build\explorer /I /Y
 copy src\manifest.json chrome_build\manifest.json
 
 echo.
@@ -22,6 +23,7 @@ xcopy src\newtab firefox_build\newtab /I /Y
 xcopy src\options firefox_build\options /I /Y
 xcopy src\popup firefox_build\popup /I /Y
 xcopy src\report firefox_build\report /I /Y
+xcopy src\explorer firefox_build\explorer /I /Y
 copy src\manifest-firefox.json firefox_build\manifest.json
 
 echo.

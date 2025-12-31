@@ -57,6 +57,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // Event Listeners
+    const btnExplorer = document.getElementById('btnExplorer');
+    if (btnExplorer) {
+        btnExplorer.addEventListener('click', () => {
+            chrome.tabs.create({ url: chrome.runtime.getURL('explorer/explorer.html') });
+        });
+    }
+
     btnScan.addEventListener('click', performScan);
     btnGroup.addEventListener('click', performGroup);
 

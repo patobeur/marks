@@ -11,7 +11,12 @@
         "message": "Escanear Duplicados"
     },
     "btnViewDetails": {
-        "message": "Ver Lista de Duplicados"
+        "message": "Ver Lista",
+        "description": "Button to view details"
+    },
+    "btnExplorer": {
+        "message": "Explorar",
+        "description": "Button to open file explorer view"
     },
     "btnGroup": {
         "message": "Agrupar"

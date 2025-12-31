@@ -1,0 +1,129 @@
+:root {
+    --bg-color: #0f172a;
+    --text-main: #f1f5f9;
+    --text-sub: #94a3b8;
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --accent: #818cf8;
+    --hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-main);
+}
+
+/* Tree View */
+.tree-view {
+    background: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    min-height: 400px;
+}
+
+.tree-node {
+    margin-left: 10px;
+}
+
+.node-content {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.2s;
+}
+
+.node-content:hover {
+    background: var(--hover-bg);
+}
+
+.node-icon {
+    margin-right: 8px;
+    font-size: 1.1rem;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+}
+
+.node-label {
+    flex: 1;
+}
+
+.node-children {
+    margin-left: 22px;
+    border-left: 1px solid var(--border-color);
+    display: block;
+}
+
+.node-children.hidden {
+    display: none;
+}
+
+/* Specific Styles */
+.is-folder {
+    font-weight: 500;
+    color: var(--accent);
+}
+
+.is-bookmark {
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.is-bookmark:hover {
+    color: #a5b4fc;
+}
+
+.search-box input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-main);
+    width: 250px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Duplicate Styling */
+.is-duplicate {
+    color: #fdba74 !important;
+    /* Light Orange */
+}
+
+.duplicate-icon {
+    margin-right: 6px;
+    font-size: 0.9em;
+}

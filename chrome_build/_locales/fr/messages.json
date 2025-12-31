@@ -11,7 +11,12 @@
     "message": "Scanner les doublons"
   },
   "btnViewDetails": {
-    "message": "Voir Liste des doublons"
+    "message": "Voir Liste",
+    "description": "Button to view details"
+  },
+  "btnExplorer": {
+    "message": "Explorer",
+    "description": "Button to open file explorer view"
   },
   "btnGroup": {
     "message": "Regrouper"
